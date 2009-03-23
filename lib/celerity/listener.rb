@@ -69,7 +69,9 @@ module Celerity
     #
     
     def statusMessageChanged(page, message)
-      @procs[:status].each { |h| h.call(page, message) }
+      if handle = @procs[:status].shift
+        handle.call(page, message)
+      end
     end
     
     #
@@ -77,7 +79,9 @@ module Celerity
     #
     
     def handleAlert(page, message)
-      @procs[:alert].each { |h| h.call(page, message) }
+      if handle = @procs[:alert].shift
+        handle.call(page, message)
+      end
     end
     
     #
@@ -85,7 +89,9 @@ module Celerity
     #
     
     def handleConfirm(page, message)
-      @procs[:confirm].each { |h| h.call(page, message) }
+      if handle = @procs[:confirm].shift
+        handle.call(page, message)
+      end
     end
 
     #
@@ -93,7 +99,9 @@ module Celerity
     #
     
     def handleAttachment(page)
-      @procs[:attachment].each { |h| h.call(page) }
+      if handle = @procs[:attachment].shift
+        handle.call(page)
+      end
     end
     
     #
@@ -101,7 +109,9 @@ module Celerity
     #
     
     def handlePrompt(page, message)
-      @procs[:prompt].each { |h| h.call(page, message) }
+      if handle = @procs[:prompt].shift
+        handle.call(page, message)
+      end
     end
     
     #
@@ -109,7 +119,9 @@ module Celerity
     #
     
     def webWindowClosed(web_window_event)
-      @procs[:web_window_event].each { |h| h.call(web_window_event) }
+      if handle = @procs[:web_window_event].shift
+        handle.call(web_window_event)
+      end
     end
     alias_method :webWindowOpened, :webWindowClosed
     alias_method :webWindowContentChanged, :webWindowClosed
@@ -119,7 +131,9 @@ module Celerity
     #
     
     def error(message, url, line, column, key)
-      @procs[:html_parser].each { |h| h.call(message, url, line, column, key) }
+      if handle = @procs[:html_parser].shift
+        handle.call(message, url, line, column, key)
+      end
     end
     alias_method :warning, :error
 
@@ -128,7 +142,9 @@ module Celerity
     #
     
     def notify(message, origin)
-      @procs[:incorrectness].each { |h| h.call(message, origin) }
+      if handle = @procs[:incorrectness].shift
+        handle.call(message, origin)
+      end
     end
 
   end # Listener
