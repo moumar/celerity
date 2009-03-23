@@ -128,15 +128,12 @@ describe "Listener" do
   end
   
   it "handles several invocations of all registered listeners" do
-    updates = []
-    @listener.add_listener(:alert) { updates << :first }
-    @listener.add_listener(:alert) { updates << :second }
+    @listener.add_listener(:alert) { :first }
+    @listener.add_listener(:alert) { :second }
     
-    @listener.handleAlert('foo', 'bar')
-    updates.should == [:first, :second]
-    
-    @listener.handleAlert('foo', 'bar')
-    updates.should == [:first, :second, :first, :second]
+    @listener.handleAlert('foo', 'bar').should == :first
+    @listener.handleAlert('foo', 'bar').should == :second
+    @listener.handleAlert('foo', 'bar').should == nil
   end
 
 end
