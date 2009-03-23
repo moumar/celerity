@@ -279,7 +279,9 @@ describe "SelectList" do
 
     it "doesn't fire onchange event when selecting an already selected item" do
       alerts = []
-      @browser.add_listener(:alert) { |_, msg| alerts << msg }
+      3.times do
+        @browser.add_listener(:alert) { |_, msg| alerts << msg; nil }
+      end
 
       @browser.select_list(:id, "new_user_languages").clear_selection # removes the two pre-selected options
       @browser.select_list(:id, "new_user_languages").select("English")
